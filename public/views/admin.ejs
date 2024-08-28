@@ -228,14 +228,12 @@
                                 </div>
 
                                 <div class="col-md-2 text-center d-flex align-items-center">
-                                    <button type="button" class="btn btn-success w-30 mr-10px" data-target="#editarProveedoresModal-<%= post._id %>" data-toggle="modal">
+                                    <button type="button" class="btn btn-success w-40 mr-10px" data-target="#editarProveedoresModal-<%= post._id %>" data-toggle="modal">
                                         <i class="ml-0px bi bi-pencil-square"></i>
                                     </button>
-                                    <form method="POST" action="/admin/delete/<%= post._id %>/<%= post.image %>" class="w-30">
-                                        <button type="submit" href="/" class="btn btn-danger w-100">
-                                            <i class="ml-0px bi bi-trash"></i>
-                                        </button>
-                                    </form>
+                                    
+                                    <button type="submit" href="/" class="btn btn-danger w-40" onclick="deleteConfirmationMessage('<%= post.image %>', '<%= post._id %>')"><i class="ml-0px bi bi-trash"></i></button>
+                                    
                                 </div>
 
 
@@ -350,11 +348,53 @@
             </div>
         </div>  
        
-        
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script type="text/javascript" src="/../js/jquery.js"></script>
         <script type="text/javascript" src="/../js/vendors.min.js"></script>
         <script type="text/javascript" src="/../js/main.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
+            function deleteConfirmationMessage(imageId, pathId){
+                Swal.fire({
+                    title: "Estas seguro?",
+                    text: "Momentaneamente no existen backups",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Eliminar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/admin/delete/${pathId}/${imageId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Accept': 'application/json'
+                        },
+                         credentials: 'same-origin'
+                        })
+                        .then(response => {
+                        if (response.ok) {
+                            Swal.fire({
+                            title: "Eliminado",
+                            text: `La noticia ha sido eliminada`,
+                            icon: "success"
+                            }).then(() => {
+                            window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                            title: "Error",
+                            text: "There was an error deleting the file.",
+                            icon: "error"
+                            });
+                        }
+                        })
+                    }
+                });
+            }
+        </script>
     </body>
 </html>
