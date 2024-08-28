@@ -42,7 +42,7 @@ const users = [];
 const userAlpha = {
     id: Date.now().toString(),
     name: "Antonello",
-    username: "a",
+    email: "a",
     password: "",
 };
 
@@ -51,6 +51,7 @@ async function hashPass() {
     userAlpha.password = pass;
     users.push(userAlpha);
     return pass;
+
 }
 hashPass();
 
@@ -62,7 +63,7 @@ initializePassport(passport,
 //! Server
 const start = async () => {
     try {
-        app.listen(8080, () => {
+        app.listen(4000, () => {
             console.log('Server on Port 4000')
         })
     } catch (error) {
