@@ -24,7 +24,7 @@
     </head>
     <body data-mobile-nav-style="classic" class="bg-admin">  
         
-        <%- include('../components/adminNav.ejs') %>
+        <%- include('./components/adminNav.ejs') %>
         
         <section>
             <div class="container adminContainer pt-0" style="max-width: 100% !important">
@@ -39,21 +39,16 @@
                         <div class="row">
                         
                             <div class="col-md-6 text-end">
-                                <form action="/admin/proveedores/search" method="GET">
-                                    <input class="input-name bg-transparent border-color-transparent-white-light w-70" type="text" name="proveedor" placeholder="Buscar Proveedor" />
+                                <form action="/search" method="GET">
+                                    <input class="input-name bg-transparent border-color-transparent-white-light w-70" type="text" name="search-post" placeholder="Buscar Post" />
                                     <button class="btn btn-medium btn-base-color btn-hover-animation btn-round-edge btn-box-shadow " type="submit"><i class="bi bi-search text-white"></i></button> 
                                 </form>
                             </div>
                             <div class="col-md-6 text-left">
-                                <button class="btn btn-medium btn-base-color btn-hover-animation btn-round-edge btn-box-shadow " type="submit" data-toggle="modal" data-target="#importarProductoModal">
-                                    <span> 
-                                        <span class="btn-text">Importar Masivamente</span> 
-                                        <span class="btn-icon"><i class="fa-solid fa-arrow-right"></i></span> 
-                                    </span>
-                                </button>
+                               
                                 <button class=" btn btn-medium btn-base-color btn-hover-animation btn-round-edge btn-box-shadow" type="button" data-toggle="modal" data-target="#crearProveedorModal">
                                     <span>
-                                        <span class="btn-text">Crear Nuevo Proveedor</span>
+                                        <span class="btn-text">Crear Nuevo Post</span>
                                         <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
                                     </span>
                                 </button>
@@ -62,14 +57,7 @@
                     </div>
                 </div>
                 <div class="row mt-70px">
-                    <div class="col-md-2 sidebar-admin text-white">
-                        <a href="/admin/productos" class="fs-28 adminLinks">Productos</a>
-                        
-                        <a href="/admin/proveedores" class="fs-28 adminLinks text-base-color fw-600">Proveedores</a>
-                        
-                        <a href="/admin/integrantes" class="fs-28 adminLinks" >Integrantes</a>
-                    </div>
-                    <div class="col-md-10 list-admin">
+                    <div class="col-md-12 list-admin">
                         <div class="row text-white">
                             <div class="col-md-2">
                                 <h6 class="fw-600">Logo</h6>
@@ -83,13 +71,13 @@
                         </div>
 
                         <% if (typeof result !== 'undefined' && result.length >= 0) { %>
-                            <% result.forEach(supplier => { %>
+                            <% result.forEach(post => { %>
                                 <div class="row mb-2 product-row">
                                     <div class="col-md-2 team-style-08">
                                         <figure class="mb-0 position-relative">
 
-                                            <% if (supplier.image) { %>
-                                                <img src="<%= supplier.image %>" alt="<%= supplier.name %>" class="img-fluid border-radius-6px">
+                                            <% if (post.image) { %>
+                                                <img src="<%= post.image %>" alt="<%= post.name %>" class="img-fluid border-radius-6px">
                                                 <% } else { %>
                                                 <p>No Image</p>
                                             <% } %>
@@ -97,7 +85,7 @@
                                             
                                             <figcaption class="w-100 h-100 d-flex align-items-end p-12 lg-p-8 img-gradient border-radius-6px">
                                                 <div class="social-icon d-flex flex-column flex-shrink-1 w-100">
-                                                    <button class="w-100 btn btn-medium btn-dark btn-hover-animation btn-round-edge btn-box-shadow" type="submit" data-target="#editarImagenProveedorModal-<%= supplier._id %>" data-toggle="modal">
+                                                    <button class="w-100 btn btn-medium btn-dark btn-hover-animation btn-round-edge btn-box-shadow" type="submit" data-target="#editarImagenProveedorModal-<%= post._id %>" data-toggle="modal">
                                                         <span>
                                                             <span class="btn-text">Editar Imagen</span>
                                                             <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
@@ -108,25 +96,25 @@
                                         </figure>
                                     </div>
                                     <div class="col-md-2 text-white align-self-center">
-                                        <p class="mb-0"><%= supplier.name %></p>
+                                        <p class="mb-0"><%= post.name %></p>
                                     </div>
                                     <div class="col-md-2 text-center d-flex align-items-center">
-                                        <button type="button" class="btn btn-success w-30 mr-10px" data-target="#editarProveedorModal-<%= supplier._id %>" data-toggle="modal">
+                                        <button type="button" class="btn btn-success w-30 mr-10px" data-target="#editarProveedorModal-<%= post._id %>" data-toggle="modal">
                                             <i class="ml-0px bi bi-pencil-square"></i>
                                         </button>
                                         
-                                        <form method="POST" action="/admin/proveedores/delete/<%= supplier._id %>" class="w-30">
+                                        <form method="POST" action="/admin/delete/<%= post._id %>" class="w-30">
                                             <button type="submit" href="/" class="btn btn-danger w-100">
                                                 <i class="ml-0px bi bi-trash"></i>
                                             </button>
                                         </form>
                                     </div>
 
-                                    <div class="modal fade" id="editarProveedorModal-<%= supplier._id %>" tabindex="-1" aria-labelledby="editarProductoModalLabel-<%= supplier._id %>" aria-hidden="true"  data-target=".bd-example-modal-lg">
+                                    <div class="modal fade" id="editarProveedorModal-<%= post._id %>" tabindex="-1" aria-labelledby="editarProductoModalLabel-<%= post._id %>" aria-hidden="true"  data-target=".bd-example-modal-lg">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editarProductoModalLabel">Editar <%= supplier.name %></h5>
+                                                    <h5 class="modal-title" id="editarProductoModalLabel">Editar <%= post.name %></h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background: none;
                                                     border: none;
                                                     font-size: 40px;
@@ -136,11 +124,11 @@
                                                 </div>
                                                 <div class="modal-body">
 
-                                                    <form action="/admin/proveedores/update/<%= supplier._id %>" method="POST">
+                                                    <form action="/admin/update/<%= post._id %>" method="POST">
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <label for="nombreProducto text-primary">Nombre</label>
-                                                                <input type="text" class="form-control" name="name" value="<%= supplier.name %>">
+                                                                <input type="text" class="form-control" name="name" value="<%= post.name %>">
                                                             </div>
                                                         </div>
                                                         <div class="form-group text-center">
@@ -153,11 +141,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="modal fade" id="editarImagenProveedoroModal-<%= supplier._id %>" tabindex="-1" aria-labelledby="editarImagenProductoModal" aria-hidden="true"  data-target=".bd-example-modal-lg">
+                                    <div class="modal fade" id="editarImagenProveedoroModal-<%= post._id %>" tabindex="-1" aria-labelledby="editarImagenProductoModal" aria-hidden="true"  data-target=".bd-example-modal-lg">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editarImagenProveedorModalLabel">Editar Imagen de <%= supplier.name %></h5>
+                                                    <h5 class="modal-title" id="editarImagenProveedorModalLabel">Editar Imagen de <%= post.name %></h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background: none;
                                                     border: none;
                                                     font-size: 40px;
@@ -167,7 +155,7 @@
                                                 </div>
                                                 <div class="modal-body">
 
-                                                    <form action="/admin/proveedores/update-image/<%= supplier._id %>" method="POST" enctype="multipart/form-data"> 
+                                                    <form action="/admin/update-image/<%= post._id %>" method="POST" enctype="multipart/form-data"> 
                                                         <div class="form-group mt-20px">
                                                             <input type="file" class="form-control" name="image" accept="image/*">
                                                         </div>
@@ -190,18 +178,18 @@
                             <% } %>
                         <% } %>
 
-                        <% suppliers.forEach(supplier => { %>
+                        <% posts.forEach(post => { %>
                             <div class="row mb-2 product-row">
                                 <div class="col-md-2 team-style-08">
                                     <figure class="mb-0 position-relative">
-                                        <% if (supplier.image) { %>
-                                            <img src="<%= supplier.image %>" alt="<%= supplier.name %>" class="img-fluid border-radius-6px">
+                                        <% if (post.image) { %>
+                                            <img src="<%= post.image %>" alt="<%= post.name %>" class="img-fluid border-radius-6px">
                                             <% } else { %>
                                             <p>No Image</p>
                                         <% } %>
                                         <figcaption class="w-100 h-100 d-flex align-items-end p-12 lg-p-8 img-gradient border-radius-6px">
                                             <div class="social-icon d-flex flex-column flex-shrink-1 w-100">
-                                                <button class="w-100 btn btn-medium btn-dark btn-hover-animation btn-round-edge btn-box-shadow" type="submit" data-target="#editarImagenProveedorModal-<%= supplier._id %>" data-toggle="modal">
+                                                <button class="w-100 btn btn-medium btn-dark btn-hover-animation btn-round-edge btn-box-shadow" type="submit" data-target="#editarImagenProveedorModal-<%= post._id %>" data-toggle="modal">
                                                     <span>
                                                         <span class="btn-text">Editar Imagen</span>
                                                         <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
@@ -212,23 +200,23 @@
                                     </figure>
                                 </div>
                                 <div class="col-md-2 text-white align-self-center">
-                                    <p class="mb-0"><%= supplier.name %></p>
+                                    <p class="mb-0"><%= post.name %></p>
                                 </div>
                                 <div class="col-md-2 text-center d-flex align-items-center">
-                                    <button type="button" class="btn btn-success w-30 mr-10px" data-target="#editarProveedoresModal-<%= supplier._id %>" data-toggle="modal">
+                                    <button type="button" class="btn btn-success w-30 mr-10px" data-target="#editarProveedoresModal-<%= post._id %>" data-toggle="modal">
                                         <i class="ml-0px bi bi-pencil-square"></i>
                                     </button>
-                                    <form method="POST" action="/admin/proveedores/delete/<%= supplier._id %>" class="w-30">
+                                    <form method="POST" action="/admin/delete/<%= post._id %>" class="w-30">
                                         <button type="submit" href="/" class="btn btn-danger w-100">
                                             <i class="ml-0px bi bi-trash"></i>
                                         </button>
                                     </form>
                                 </div>
-                                <div class="modal fade" id="editarImagenProveedorModal-<%= supplier._id %>" tabindex="-1" aria-labelledby="editarImagenProveedorModal-<%= supplier._id %>" aria-hidden="true"  data-target=".bd-example-modal-lg">
+                                <div class="modal fade" id="editarImagenProveedorModal-<%= post._id %>" tabindex="-1" aria-labelledby="editarImagenProveedorModal-<%= post._id %>" aria-hidden="true"  data-target=".bd-example-modal-lg">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="editarImagenProductoModalLabel">Editar Imagen de <%= supplier.name %></h5>
+                                                <h5 class="modal-title" id="editarImagenProductoModalLabel">Editar Imagen de <%= post.name %></h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background: none;
                                                 border: none;
                                                 font-size: 40px;
@@ -237,7 +225,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="/admin/proveedores/update-image/<%= supplier._id %>" method="POST" enctype="multipart/form-data"> 
+                                                <form action="/admin/update-image/<%= post._id %>" method="POST" enctype="multipart/form-data"> 
                                                     <div class="form-group mt-20px">
                                                         <input type="file" class="form-control" name="image" accept="image/*">
                                                     </div>
@@ -250,11 +238,11 @@
                                     </div>
                                 </div>
 
-                                <div class="modal fade" id="editarProveedoresModal-<%= supplier._id %>" tabindex="-1" aria-labelledby="editarProvedoreesModalLabel-<%= supplier._id %>" aria-hidden="true"  data-target=".bd-example-modal-lg">
+                                <div class="modal fade" id="editarProveedoresModal-<%= post._id %>" tabindex="-1" aria-labelledby="editarProvedoreesModalLabel-<%= post._id %>" aria-hidden="true"  data-target=".bd-example-modal-lg">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="editarProductoModalLabel">Editar <%= supplier.name %></h5>
+                                                <h5 class="modal-title" id="editarProductoModalLabel">Editar <%= post.name %></h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background: none;
                                                 border: none;
                                                 font-size: 40px;
@@ -263,11 +251,11 @@
                                                   </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="/admin/proveedores/update/<%= supplier._id %>" method="POST">
+                                                <form action="/admin/update/<%= post._id %>" method="POST">
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <label for="nombreProducto text-primary">Nombre</label>
-                                                            <input type="text" class="form-control" name="name" value="<%= supplier.name %>">
+                                                            <input type="text" class="form-control" name="name" value="<%= post.name %>">
                                                         </div>
                                                     </div>
                                                     <div class="form-group text-center">
@@ -290,7 +278,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="crearProductoModalLabel">Crear Nuevo Proveedor</h5>
+                        <h5 class="modal-title" id="crearProductoModalLabel">Crear Nuevo Post</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background: none;
                         border: none;
                         font-size: 40px;
@@ -300,7 +288,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Contenido del formulario para crear un nuevo producto -->
-                        <form action="/admin/proveedores/create" method="POST" enctype="multipart/form-data">
+                        <form action="/admin/create" method="POST" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="nombreProducto">Nombre</label>
@@ -321,39 +309,13 @@
                   
                 </div>
             </div>
-        </div>
-
-        <!-- Import Modal -->
-        <div class="modal fade" id="importarProductoModal" tabindex="-1" aria-labelledby="importarProductoModal" aria-hidden="true"  data-target=".bd-example-modal-lg">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="crearProductoModalLabel">Importar Proveedores Masivamente</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background: none;
-                        border: none;
-                        font-size: 40px;
-                        color: red">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/upload/productos" method="POST" enctype="multipart/form-data">                        
-                            <div class="input-group">
-                                <input type="file" class="form-control bg-transparent border-color-transparent-white-light file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="file">
-                                <button class="btn btn-base-color btn-hover-animation btn-round-edge btn-box-shadow" type="submit" id="inputGroupFileAddon04">Subir</button>
-                            </div>
-                        </form>
-                    </div>
-                  
-                </div>
-            </div>|
-        </div>
+        </div>  
        
         
         <script type="text/javascript" src="/../js/jquery.js"></script>
         <script type="text/javascript" src="/../js/vendors.min.js"></script>
         <script type="text/javascript" src="/../js/main.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>

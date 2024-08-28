@@ -11,11 +11,13 @@ import bcrypt from 'bcrypt';
 import passport from 'passport';
 import initializePassport from './passport-config.mjs';
 
+import db from "./db/connect.mjs"
 import admin from './routes/admin.mjs';
 import login from './routes/login.mjs';
 
 const app = express();
 const __dirname = path.resolve();
+db()
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'public', 'views'));

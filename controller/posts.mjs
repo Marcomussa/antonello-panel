@@ -1,4 +1,4 @@
-import postModel from "../db/models/Post"
+import postModel from "../db/models/Post.mjs"
 import path, { dirname } from 'path';
 import fs from 'fs';
 
@@ -140,4 +140,4 @@ async function findThreeRandomPosts() {
     }
 }
 
-export { getAllPosts, updatePost, createPost, deletePost, searchPost };
+export default { getAllPosts, updatePost, createPost, deletePost, searchPost };
