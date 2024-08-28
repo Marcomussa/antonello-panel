@@ -19368,3 +19368,7 @@ footer .footer-navbar .nav-item:last-child a {
 .navbar img {
   max-width: 100% !important;
 }
+
+.form-control, .btn, .form-select {
+  box-shadow: 0px 6px 20px -8px rgba(0,0,0,0.4) !important; 
+}
