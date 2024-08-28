@@ -42,7 +42,6 @@ const searchPost = async (req, res) => {
 const createPost = async (req, res) => {
     try {
         const { title, description } = req.body;
-        //const imagePath = path.join(__dirname, '/public/uploads', image);
 
         const uploadNewImage = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
@@ -50,12 +49,11 @@ const createPost = async (req, res) => {
                     if (error) reject(error);
                     else resolve(result);
                 }
-            ).end(req.file.buffer); // Envía el buffer de la imagen
+            ).end(req.file.buffer); 
         });
 
         const newPost = new postModel({
             title,
-
             imageUrl: uploadNewImage.secure_url,
             description,
         });
@@ -91,9 +89,6 @@ const updatePost = async (req, res) => {
 const updatePostImage = async (req, res) => {
     const { id } = req.params;
 
-    //const post = await postModel.findById(id);
-    //const oldImageFile = path.join(__dirname, '/public/uploads', post.image);
-
     try {
         const uploadNewImage = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
@@ -101,7 +96,7 @@ const updatePostImage = async (req, res) => {
                     if (error) reject(error);
                     else resolve(result);
                 }
-            ).end(req.file.buffer); // Envía el buffer de la imagen
+            ).end(req.file.buffer);
         }); 
         const updatedPost = await postModel.findByIdAndUpdate(id, {
             imageUrl: uploadNewImage.secure_url
@@ -120,7 +115,6 @@ const updatePostImage = async (req, res) => {
 
 const deletePost = async (req, res) => {
     const { id } = req.params
-    //const imagePath = path.join(__dirname, '/public/uploads', `${imageId}`)
 
     try {
         const deletedPost = await postModel.findByIdAndDelete(id)
