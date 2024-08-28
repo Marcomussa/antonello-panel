@@ -38,6 +38,7 @@ app.use('/', login);
 app.use('/admin', admin);
 
 //! Login
+const users = [];
 const userAlpha = {
     id: Date.now().toString(),
     name: "Antonello",
