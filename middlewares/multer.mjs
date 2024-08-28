@@ -3,9 +3,11 @@ import path from 'path';
 
 const __dirname = path.resolve();
 
+console.log(__dirname)
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '/public', 'uploads'))
+        cb(null, path.join(__dirname, '../public', 'uploads'))
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname))
