@@ -30,12 +30,11 @@ const searchPost = async (req, res) => {
 }
 
 const createPost = async (req, res) => {
-    const { title, category, description } = req.body
+    const { title, description } = req.body
     const imagePath = req.file.filename
 
     const newPost = new postModel({
         title,
-        category,
         image: imagePath,
         description
     })
@@ -47,13 +46,13 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
     const { id, imageId } = req.params
-    const { title, category, description } = req.body
+    const { title, description } = req.body
     const imagePath = req.file ? req.file.filename : null
+
     const imageFile = path.join(__dirname, '../public/uploads', `${imageId}`)
 
     const updateData = {
         title,
-        category,
         description
     }
 
