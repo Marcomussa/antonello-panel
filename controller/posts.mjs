@@ -42,15 +42,21 @@ const searchPost = async (req, res) => {
 const createPost = async (req, res) => {
     try {
         const { title, description } = req.body;
-        const image = req.file.filename;
-        const imagePath = path.join(__dirname, '/public/uploads', image);
+        //const imagePath = path.join(__dirname, '/public/uploads', image);
 
-        const uploadImage = await cloudinary.uploader.upload(imagePath);
+        const uploadNewImage = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream(
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                }
+            ).end(req.file.buffer); // Envía el buffer de la imagen
+        });
 
         const newPost = new postModel({
             title,
-            image,
-            imageUrl: uploadImage.secure_url,
+
+            imageUrl: uploadNewImage.secure_url,
             description,
         });
 
@@ -83,23 +89,23 @@ const updatePost = async (req, res) => {
 };
 
 const updatePostImage = async (req, res) => {
-    const { id, imageId } = req.params;
-    const image = req.file ? req.file.filename : null;
+    const { id } = req.params;
 
-    if (!image) {
-        return res.status(400).json({ error: 'No image file provided' });
-    }
-
-    const post = await postModel.findById(id);
-    const oldImageFile = path.join(__dirname, '/public/uploads', post.image);
+    //const post = await postModel.findById(id);
+    //const oldImageFile = path.join(__dirname, '/public/uploads', post.image);
 
     try {
-        const uploadNewImage = await cloudinary.uploader.upload(path.join(__dirname, '/public/uploads', image));
+        const uploadNewImage = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream(
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                }
+            ).end(req.file.buffer); // Envía el buffer de la imagen
+        }); 
         const updatedPost = await postModel.findByIdAndUpdate(id, {
-            image,
             imageUrl: uploadNewImage.secure_url
-        },
-            { new: true });
+        },{ new: true });
 
         if (!updatedPost) {
             return res.status(404).send('Post not found');
@@ -113,8 +119,8 @@ const updatePostImage = async (req, res) => {
 
 
 const deletePost = async (req, res) => {
-    const { id, imageId } = req.params
-    const imagePath = path.join(__dirname, '/public/uploads', `${imageId}`)
+    const { id } = req.params
+    //const imagePath = path.join(__dirname, '/public/uploads', `${imageId}`)
 
     try {
         const deletedPost = await postModel.findByIdAndDelete(id)
