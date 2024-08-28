@@ -253,7 +253,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="/admin/update-image/<%= post._id %>" method="POST" enctype="multipart/form-data"> 
+                                                <form action="/admin/update-image/<%= post._id %>/<%= post.image %>" method="POST" enctype="multipart/form-data"> 
                                                     <div class="form-group mt-20px">
                                                         <input type="file" class="form-control" name="image" accept="image/*">
                                                     </div>
@@ -283,10 +283,16 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <label for="nombreProducto text-primary">Nombre</label>
-                                                            <input type="text" class="form-control" name="name" value="<%= post.name %>">
+                                                            <input type="text" class="form-control" name="title" value="<%= post.title %>">
                                                         </div>
                                                     </div>
-                                                    <div class="form-group text-center">
+                                                    <div class="row mt-20px">
+                                                        <div class="col-md-12">
+                                                            <label for="nombreProducto">Descripcion</label>
+                                                            <input type="text" class="form-control" name="description" value="<%= post.description %>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group text-center mt-20px">
                                                         <button type="submit" class="btn btn-primary mt-10px w-65 pt-10px pb-10px" name="submit" value="submit">Guardar</button>
                                                     </div>
                                                 </form>
@@ -324,7 +330,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row mt-20px">
                                 <div class="col-md-12">
                                     <label for="nombreProducto">Descripcion</label>
                                     <input type="text" class="form-control" name="description">

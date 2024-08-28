@@ -13,8 +13,10 @@ router.get("/search", postsController.searchPost)
 
 router.post("/create", multer.single("image"), postsController.createPost)
 
-router.post("/update/:id/:imageId", multer.single("image"), postsController.updatePost)
+router.post("/update/:id", postsController.updatePost)
 
-router.post("/delete/:id/:imageId", postsController.deletePost)
+router.post("/update-image/:id/:imageId", multer.single("image"), postsController.updatePostImage)
+
+router.post("/delete/:id/:imageID", postsController.deletePost)
 
 export default router

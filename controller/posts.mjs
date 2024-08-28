@@ -45,48 +45,59 @@ const createPost = async (req, res) => {
 }
 
 const updatePost = async (req, res) => {
-    const { id, imageId } = req.params
-    const { title, description } = req.body
-    const imagePath = req.file ? req.file.filename : null
+    const { id } = req.params;
+    const { title, description } = req.body;
 
-    const imageFile = path.join(__dirname, '../public/uploads', `${imageId}`)
-
-    const updateData = {
-        title,
-        description
-    }
-
-    if (imagePath) {
-        updateData.image = imagePath
-    }
+    const updateData = { title, description };
 
     try {
-        const updatedPost = await postModel.findByIdAndUpdate(id, updateData, { new: true })
-
-        if (imagePath) {
-            fs.access(imageFile, fs.constants.F_OK, (err) => {
-                if (err) {
-                    return res.status(404).json({ error: 'File not found' })
-                }
-
-                fs.unlink(imageFile, (err) => {
-                    if (err) {
-                        console.error('Error deleting file:', err)
-                        return res.status(500).json({ error: 'Error deleting file' })
-                    }
-                })
-            })
-        }
+        const updatedPost = await postModel.findByIdAndUpdate(id, updateData, { new: true });
 
         if (!updatedPost) {
-            return res.status(404).send('Post not found')
+            return res.status(404).send('Post not found');
         }
 
-        res.redirect("/admin")
+        res.redirect("/admin");
     } catch (err) {
-        res.status(500).send(err)
+        res.status(500).send(err);
     }
-}
+};
+
+const updatePostImage = async (req, res) => {
+    const { id, imageId } = req.params;
+    const imagePath = req.file ? req.file.filename : null;
+
+    if (!imagePath) {
+        return res.status(400).json({ error: 'No image file provided' });
+    }
+
+    const post = await postModel.findById(id);
+    const oldImageFile = path.join(__dirname, '/public/uploads', post.image);
+
+    try {
+        const updatedPost = await postModel.findByIdAndUpdate(id, { image: imagePath }, { new: true });
+
+        if (!updatedPost) {
+            return res.status(404).send('Post not found');
+        }
+
+        fs.access(oldImageFile, fs.constants.F_OK, (err) => {
+            if (!err) { 
+                fs.unlink(oldImageFile, (err) => {
+                    if (err) {
+                        console.error('Error deleting file:', err);
+                        return res.status(500).json({ error: 'Error deleting file' });
+                    }
+                });
+            }
+        });
+
+        res.redirect("/admin");
+    } catch (err) {
+        res.status(500).send(err);
+    }
+};
+
 
 const deletePost = async (req, res) => {
     const { id, imageId } = req.params
@@ -139,4 +150,4 @@ async function findThreeRandomPosts() {
     }
 }
 
-export default { getAllPosts, updatePost, createPost, deletePost, searchPost };
+export default { getAllPosts, updatePost, updatePostImage, createPost, deletePost, searchPost };
