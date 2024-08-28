@@ -40,6 +40,7 @@ app.use(methodOverride("_method"));
 app.use('/', login);
 app.use('/admin', admin);
 app.use('/api', api);
+app.get('*', (req, res) => res.render("404"))
 
 //! Login
 const users = [];
