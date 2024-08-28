@@ -10,6 +10,7 @@ import methodOverride from 'method-override';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import initializePassport from './passport-config.mjs';
+import axios from "axios"
 
 import db from "./db/connect.mjs"
 import admin from './routes/admin.mjs';
@@ -75,5 +76,20 @@ const start = async () => {
         console.log('ERROR', error)
     }
 };
+
+//! Keep Alive Production Server
+function makeGETPetition() {
+    axios.get('https://antonello-panel.onrender.com/api')
+        .then(response => {
+            console.log("Peticion Automatica Hecha");
+        })
+        .catch(error => {
+            console.error('Fallo en Peticion Automatica:', error);
+        });
+}
+
+makeGETPetition();
+
+setInterval(makeGETPetition, 30000);
 
 await start()
