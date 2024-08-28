@@ -101,7 +101,8 @@ const updatePostImage = async (req, res) => {
 
 const deletePost = async (req, res) => {
     const { id, imageId } = req.params
-    const imagePath = path.join(__dirname, '../public/uploads', `${imageId}`)
+    const imagePath = path.join(__dirname, '/public/uploads', `${imageId}`)
+
     try {
         const deletedPost = await postModel.findByIdAndDelete(id)
         if (!deletedPost) {

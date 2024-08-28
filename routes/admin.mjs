@@ -17,6 +17,6 @@ router.post("/update/:id", postsController.updatePost)
 
 router.post("/update-image/:id/:imageId", multer.single("image"), postsController.updatePostImage)
 
-router.post("/delete/:id/:imageID", postsController.deletePost)
+router.post("/delete/:id/:imageId", postsController.deletePost)
 
 export default router

@@ -119,7 +119,7 @@
                                             <i class="ml-0px bi bi-pencil-square"></i>
                                         </button>
                                         
-                                        <form method="POST" action="/admin/delete/<%= post._id %>" class="w-30">
+                                        <form method="POST" action="/admin/delete/<%= post._id %>/<%= post.image %>" class="w-30">
                                             <button type="submit" href="/" class="btn btn-danger w-100">
                                                 <i class="ml-0px bi bi-trash"></i>
                                             </button>
@@ -232,7 +232,7 @@
                                     <button type="button" class="btn btn-success w-30 mr-10px" data-target="#editarProveedoresModal-<%= post._id %>" data-toggle="modal">
                                         <i class="ml-0px bi bi-pencil-square"></i>
                                     </button>
-                                    <form method="POST" action="/admin/delete/<%= post._id %>" class="w-30">
+                                    <form method="POST" action="/admin/delete/<%= post._id %>/<%= post.image %>" class="w-30">
                                         <button type="submit" href="/" class="btn btn-danger w-100">
                                             <i class="ml-0px bi bi-trash"></i>
                                         </button>
