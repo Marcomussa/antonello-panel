@@ -82,7 +82,7 @@
                                     <div class="col-md-3 team-style-08">
                                         <figure class="mb-0 position-relative">
                                             <% if (post.image) { %>
-                                                <img src="../uploads/<%= post.image %>" alt="<%= post.name %>" class="img-fluid border-radius-6px">
+                                                <img src="<%= post.imageUrl %>" alt="<%= post.name %>" class="img-fluid border-radius-6px">
                                                 <% } else { %>
                                                 <p>No Image</p>
                                             <% } %>
@@ -198,7 +198,7 @@
                                 <div class="col-md-3 team-style-08">
                                     <figure class="mb-0 position-relative">
                                         <% if (post.image) { %>
-                                            <img src="../uploads/<%= post.image %>" alt="<%= post.name %>" class="img-fluid border-radius-6px">
+                                            <img src="<%= post.imageUrl %>" alt="<%= post.name %>" class="img-fluid border-radius-6px">
                                             <% } else { %>
                                             <p>No Image</p>
                                         <% } %>

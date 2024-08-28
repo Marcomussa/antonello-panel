@@ -105,17 +105,6 @@ const updatePostImage = async (req, res) => {
             return res.status(404).send('Post not found');
         }
 
-        fs.access(oldImageFile, fs.constants.F_OK, (err) => {
-            if (!err) {
-                fs.unlink(oldImageFile, (err) => {
-                    if (err) {
-                        console.error('Error deleting file:', err);
-                        return res.status(500).json({ error: 'Error deleting file' });
-                    }
-                });
-            }
-        });
-
         res.redirect("/admin");
     } catch (err) {
         res.status(500).send(err);
@@ -133,22 +122,7 @@ const deletePost = async (req, res) => {
             return res.status(404).send('Post not found')
         }
 
-        cloudinary.uploader.destroy(imagePath);
-
-        fs.access(imagePath, fs.constants.F_OK, (err) => {
-            if (err) {
-                return res.status(404).json({ error: 'File not found' });
-            }
-
-            fs.unlink(imagePath, (err) => {
-                if (err) {
-                    console.error('Error deleting file:', err);
-                    return res.status(500).json({ error: 'Error deleting file' });
-                }
-
-                res.redirect("/admin");
-            });
-        })
+        res.redirect("/admin");
     } catch (err) {
         res.status(500).send(err)
     }
