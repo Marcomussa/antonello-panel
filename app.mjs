@@ -79,7 +79,7 @@ const start = async () => {
 
 //! Keep Alive Production Server
 function makeGETPetition() {
-    axios.get('https://antonello-panel.onrender.com/api')
+    axios.get('https://antonello-panel-7mcg.onrender.com/api')
         .then(response => {
             console.log("Peticion Automatica Hecha");
         })
@@ -90,6 +90,6 @@ function makeGETPetition() {
 
 makeGETPetition();
 
-setInterval(makeGETPetition, 30000);
+setInterval(makeGETPetition, 45000);
 
 await start()
